@@ -1,2 +1,4 @@
 # DevnagriRecognizer
-Feed-Forward Neural Network to recognize characters from the devnagri script.
+Convolutional Neural Network to recognize characters from the devnagri script.
+
+devanagri.py uses keras to build model.
