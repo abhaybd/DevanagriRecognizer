@@ -1,8 +1,9 @@
 # Image Classification
 
+# Uses keras 2
 # Import libraries
 from keras.models import Sequential
-from keras.layers import Convolution2D
+from keras.layers import Conv2D
 from keras.layers import MaxPooling2D
 from keras.layers import Flatten
 from keras.layers import Dense
@@ -11,7 +12,7 @@ from keras.layers import Dropout
 classifier = Sequential()
 
 # Add convolution layer
-classifier.add(Convolution2D(25, 3,3, input_shape=(32, 32, 1), activation='relu'))
+classifier.add(Conv2D(filters=25, kernel_size=(3,3), input_shape=(32, 32, 1), activation='relu'))
 
 # Pooling
 classifier.add(MaxPooling2D(pool_size=(2,2)))
@@ -20,9 +21,9 @@ classifier.add(MaxPooling2D(pool_size=(2,2)))
 classifier.add(Flatten())
 
 # Add full connection
-classifier.add(Dense(output_dim=128, activation='relu'))
-classifier.add(Dropout(p=0.1))
-classifier.add(Dense(output_dim=36, activation='softmax'))
+classifier.add(Dense(units=128, activation='relu'))
+classifier.add(Dropout(rate=0.1))
+classifier.add(Dense(units=36, activation='softmax'))
 
 # Compiling the ANN
 classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
@@ -50,10 +51,27 @@ test_set = test_datagen.flow_from_directory(
 
 classifier.fit_generator(
         train_set,
-        samples_per_epoch=61200,
-        nb_epoch=25,
+        steps_per_epoch=61200,
+        epochs=25,
         validation_data=test_set,
-        nb_val_samples=10800)
+        validation_steps=10800)
 
 classifier.save('model.h5')
+
+def validate(classifier, test_set, steps):
+    correct = 0
+    for i in range(steps):
+        a = test_set.next()
+        prediction = a[0]
+        yhat = classifier.predict(prediction)
+        yhat = yhat[0].tolist()
+        yhat = yhat.index(max(yhat))
+        y = a[1].tolist()
+        y = y.index(max(y))
+        correct+=1
+    return float(correct)/float(steps)
+    
+    
+
+        
 

@@ -24,8 +24,8 @@ public class DevanagriRecognizer {
             }
         }
         double[] flat = ArrayUtil.flattenDoubleArray(imageArr);
-        int[] shape = new int[]{1,1,image.getWidth(), image.getHeight()};
-        INDArray input = Nd4j.create(flat, shape, 'c');
+        int[] shape = new int[]{1, 1, image.getWidth(), image.getHeight()};
+        INDArray input = Nd4j.create(flat, shape, 'f');
         return network.predict(input);
     }
 

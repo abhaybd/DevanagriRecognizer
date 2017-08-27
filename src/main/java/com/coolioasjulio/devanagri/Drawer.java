@@ -17,6 +17,18 @@ import javax.swing.SwingUtilities;
 
 public class Drawer extends JFrame{
     private static final long serialVersionUID = 1L;
+    private static final int[] labels = new int[]{
+            10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+            1,
+            20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+            2,
+            30, 31, 32, 33, 34, 35, 36,
+            3, 4, 5, 6, 7, 8, 9
+    };
+    public static char getLabel(int output){
+        char letter = (char) (2324);
+        return (char) (letter + labels[output]);
+    }
 
     public static void main(String[] args) throws IOException, InterruptedException{
         DevanagriRecognizer dr = new DevanagriRecognizer("C:\\Users\\A\\Documents\\GitHub\\DevanagriRecognizer\\model_keras1.h5");
@@ -29,8 +41,8 @@ public class Drawer extends JFrame{
             BufferedImage image = drawer.getImage();
             int[] output = dr.guess(image);
             System.out.println("Output: " + Arrays.toString(output));
-            int label = maxIndex(output);
-            char letter = (char) (2325 + label);
+            int label = output[0];
+            char letter = getLabel(label);
             System.out.println("Guess: " + letter + " - " + label);
             drawer = new Drawer(320, 320);
         }
@@ -48,7 +60,7 @@ public class Drawer extends JFrame{
 
     private BufferedImage image;
     private boolean stop = false;
-    private int penSize = 44;
+    private int penSize = 40;
     private int penX, penY;
     public Drawer(int width, int height){
         super();
@@ -89,8 +101,8 @@ public class Drawer extends JFrame{
                         if(x >= image.getWidth() || y >= image.getHeight() || x < 0 || y < 0) continue;
                         int diffX = x-penX;
                         int diffY = y-penY;
-                        float distance = (float) Math.sqrt(diffX*diffX + diffY*diffY);
-                        float value = 1 - distance/radius;
+                        float distance = (float) Math.sqrt(diffX*diffX + diffY*diffY)/(float)radius;
+                        float value = (float)Math.pow(distance,10)*-1f+1f;
                         boolean rightButton = SwingUtilities.isRightMouseButton(e);
                         if(rightButton) value = 0;
                         if(value > 0 || rightButton){
