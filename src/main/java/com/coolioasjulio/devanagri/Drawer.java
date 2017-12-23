@@ -42,8 +42,8 @@ public class Drawer extends JFrame{
         this(width, height, "");
     }
 
-    public Drawer(int width, int height, String s){
-        super(s);
+    public Drawer(int width, int height, String title){
+        super(title);
         init(width, height);
     }
 
