@@ -39,7 +39,7 @@ public class DevanagriRecognizer {
     }
 
     public char guess(BufferedImage unscaled){
-        BufferedImage image = toBufferedImage(unscaled.getScaledInstance(32,32,Image.SCALE_AREA_AVERAGING));
+        BufferedImage image = toBufferedImage(unscaled.getScaledInstance(28,28,Image.SCALE_AREA_AVERAGING));
         double[][][][] imageArr = new double[1][1][image.getWidth()][image.getHeight()];
         for(int y = 0; y < image.getHeight(); y++){
             for(int x = 0; x < image.getWidth(); x++){

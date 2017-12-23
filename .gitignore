@@ -2,5 +2,6 @@
 /.idea/
 /resources/
 /target/
+/checkpoints/
 
 *.class

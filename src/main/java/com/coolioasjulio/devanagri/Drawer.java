@@ -18,8 +18,8 @@ public class Drawer extends JFrame{
     private static final long serialVersionUID = 1L;
 
     public static void main(String[] args) throws IOException, InterruptedException{
-        DevanagriRecognizer dr = new DevanagriRecognizer("model_keras1.h5");
-        Drawer drawer = new Drawer(320, 320);
+        DevanagriRecognizer dr = new DevanagriRecognizer("model_keras1_new.h5");
+        Drawer drawer = new Drawer(280,280);
         while(true){
             System.out.println("Draw a character!");
             while(!drawer.finished()){
@@ -30,7 +30,7 @@ public class Drawer extends JFrame{
             System.out.println("Output: " + output);
             char letter = (char)output;
             System.out.println("Guess: " + letter + " - " + (output-DevanagriRecognizer.START));
-            drawer = new Drawer(320, 320);
+            drawer = new Drawer(280,280);
         }
     }
 

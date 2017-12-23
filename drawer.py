@@ -7,7 +7,7 @@ from keras.models import load_model
 import preprocess
 from sklearn.externals import joblib
 
-classifier = load_model('model_complex.h5')
+classifier = load_model('model_keras1_new.h5')
 class_indices = joblib.load('class_indices.sav')
 
 def get_img(master, widget):

@@ -8,6 +8,7 @@ from keras.layers import MaxPooling2D
 from keras.layers import Flatten
 from keras.layers import Dense
 from keras.layers import Dropout
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 classifier = Sequential()
 
@@ -57,10 +58,22 @@ test_set = test_datagen.flow_from_directory(
         batch_size=32,
         class_mode='categorical')
 
+import os
+if not os.path.exists('checkpoints'):
+    os.mkdir('checkpoints')
+del os
+
+checkpoint_path = 'checkpoints/weights-improvement-{epoch:02d}-{loss:.4f}.h5'
+model_checkpoint = ModelCheckpoint(
+        checkpoint_path, monitor='loss', save_best_only=True, mode='min')
+early_stopping = EarlyStopping(monitor='val_loss')
+callbacks_list = [model_checkpoint, early_stopping]
+
 classifier.fit_generator(
         train_set,
         samples_per_epoch=61200,
         nb_epoch=25,
+        callbacks=callbacks_list,
         validation_data=test_set,
         nb_val_samples=10800)
 
