@@ -9,6 +9,7 @@ import org.nd4j.linalg.util.ArrayUtil;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class DevanagriRecognizer {
     public static final char START = (char)2325;
@@ -45,6 +46,7 @@ public class DevanagriRecognizer {
                 imageArr[0][0][x][y] = grayScale(image.getRGB(x,y))/255d;
             }
         }
+
         double[] flat = ArrayUtil.flattenDoubleArray(imageArr);
         int[] shape = new int[]{1, 1, image.getWidth(), image.getHeight()};
         INDArray input = Nd4j.create(flat, shape, 'f');
@@ -53,15 +55,14 @@ public class DevanagriRecognizer {
 
     public static BufferedImage toBufferedImage(Image image){
         if(image instanceof BufferedImage) return (BufferedImage)image;
-        BufferedImage bimage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         // Draw the image on to the buffered image
-        Graphics2D bGr = bimage.createGraphics();
+        Graphics2D bGr = bufferedImage.createGraphics();
         bGr.drawImage(image, 0, 0, null);
         bGr.dispose();
 
         // Return the buffered image
-        return bimage;
+        return bufferedImage;
     }
 
     public static int grayScale(int rgb){

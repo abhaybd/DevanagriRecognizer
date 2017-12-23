@@ -18,7 +18,7 @@ public class Drawer extends JFrame{
     private static final long serialVersionUID = 1L;
 
     public static void main(String[] args) throws IOException, InterruptedException{
-        DevanagriRecognizer dr = new DevanagriRecognizer("model.zip");
+        DevanagriRecognizer dr = new DevanagriRecognizer("model_keras1.h5");
         Drawer drawer = new Drawer(320, 320);
         while(true){
             System.out.println("Draw a character!");
@@ -39,8 +39,7 @@ public class Drawer extends JFrame{
     private int penSize = 35;
     private int penX, penY;
     public Drawer(int width, int height){
-        super();
-        init(width, height);
+        this(width, height, "");
     }
 
     public Drawer(int width, int height, String s){
@@ -66,7 +65,6 @@ public class Drawer extends JFrame{
         this.setUndecorated(true);
         this.getContentPane().add(new JLabel(icon));
         this.addMouseMotionListener(new MouseMotionListener(){
-            @Override
             public void mouseDragged(MouseEvent e) {
                 if(stop) return;
                 penX = e.getX();
@@ -93,17 +91,15 @@ public class Drawer extends JFrame{
                 repaint();
             }
 
-            @Override
             public void mouseMoved(MouseEvent e) {}
 
         });
         this.pack();
         this.setVisible(true);
-        JFrame stop = new JFrame();
+        final JFrame stop = new JFrame();
         JButton button = new JButton("Stop");
         stop.getContentPane().add(button);
         button.addActionListener(new ActionListener(){
-            @Override
             public void actionPerformed(ActionEvent e) {
                 stop.dispose();
                 stopDrawing();

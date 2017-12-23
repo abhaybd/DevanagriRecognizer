@@ -11,9 +11,9 @@ public class ModelImport {
     public static MultiLayerNetwork importModel(String path) throws IOException{
         try {
             return KerasModelImport.importKerasSequentialModelAndWeights(path);
-        } catch (InvalidKerasConfigurationException e) {
-            e.printStackTrace();
         } catch (UnsupportedKerasConfigurationException e) {
+            e.printStackTrace();
+        } catch (InvalidKerasConfigurationException e) {
             e.printStackTrace();
         }
         throw new IOException("Failed to load model!");

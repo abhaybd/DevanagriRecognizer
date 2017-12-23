@@ -12,7 +12,15 @@ from keras.layers import Dropout
 classifier = Sequential()
 
 # Add convolution layer
-classifier.add(Convolution2D(25, 3,3, input_shape=(32, 32, 1), activation='relu'))
+classifier.add(Convolution2D(32, 3, 3, input_shape=(28, 28, 1), activation='relu'))
+classifier.add(Convolution2D(32, 3, 3, activation='relu'))
+
+# Pooling
+classifier.add(MaxPooling2D(pool_size=(2,2)))
+
+# More convolution
+classifier.add(Convolution2D(32, 3, 3, activation='relu'))
+classifier.add(Convolution2D(32, 3, 3, activation='relu'))
 
 # Pooling
 classifier.add(MaxPooling2D(pool_size=(2,2)))
@@ -36,16 +44,16 @@ train_datagen = ImageDataGenerator(
 test_datagen = ImageDataGenerator(rescale=1./255)
 
 train_set = train_datagen.flow_from_directory(
-        'resources/Train',
+        'resources/New/Train',
         color_mode='grayscale',
-        target_size=(32, 32),
+        target_size=(28,28),
         batch_size=32,
         class_mode='categorical')
 
 test_set = test_datagen.flow_from_directory(
-        'resources/Test',
+        'resources/New/Test',
         color_mode='grayscale',
-        target_size=(32, 32),
+        target_size=(28,28),
         batch_size=32,
         class_mode='categorical')
 
@@ -56,22 +64,19 @@ classifier.fit_generator(
         validation_data=test_set,
         nb_val_samples=10800)
 
-classifier.save('model.h5')
+classifier.save('model_keras1_new.h5')
 
 def validate(classifier, test_set, steps):
+    import numpy as np
     correct = 0
+    n_guesses = 0
     for i in range(steps):
         a = test_set.next()
         prediction = a[0]
         yhat = classifier.predict(prediction)
-        yhat = yhat[0].tolist()
-        yhat = yhat.index(max(yhat))
-        y = a[1].tolist()
-        y = y.index(max(y))
-        correct+=1
-    return float(correct)/float(steps)
-    
-    
-
-        
-
+        y = a[1]
+        for i in range(len(yhat)):
+            n_guesses += 1
+            if np.argmax(yhat[i]) == np.argmax(y[i]):
+                correct += 1
+    return float(correct)/float(n_guesses)
