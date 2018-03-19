@@ -9,7 +9,6 @@ import org.nd4j.linalg.util.ArrayUtil;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class DevanagriRecognizer {
     public static final char START = (char)2325;

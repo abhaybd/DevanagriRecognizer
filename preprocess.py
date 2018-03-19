@@ -42,7 +42,7 @@ def process(img):
     # Clamp the center of mass so the image doesn't go off the image when it's added
     x = max(6, min(x, 14))
     y = max(6, min(y, 14))
-    # Superimpose the cropped iage offset by the center of mass
+    # Superimpose the cropped image offset by the center of mass
     processed = np.zeros((28, 28), dtype=np.float32)
     processed[14-y:14-y+img.shape[0], 14-x:14-x+img.shape[1]] = img
     return processed
