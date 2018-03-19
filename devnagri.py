@@ -5,8 +5,8 @@
 from keras.models import Sequential
 from keras.layers import Conv2D
 from keras.layers import MaxPooling2D
-from keras.layers import Flatten
 from keras.layers import Dense
+from keras.layers import GlobalAveragePooling2D
 from keras.layers import Dropout
 
 classifier = Sequential()
@@ -21,17 +21,14 @@ classifier.add(MaxPooling2D(pool_size=(2,2)))
 # More convolution
 classifier.add(Conv2D(filters=64, kernel_size=(3,3), activation='relu'))
 classifier.add(Conv2D(filters=64, kernel_size=(3,3), activation='relu'))
-classifier.add(Conv2D(filters=64, kernel_size=(3,3), activation='relu'))
 
 # Pooling
 classifier.add(MaxPooling2D(pool_size=(2,2)))
 
-# Flatten
-classifier.add(Flatten())
+classifier.add(GlobalAveragePooling2D())
 
-# Add full connection
-classifier.add(Dense(units=128, activation='relu'))
-classifier.add(Dropout(rate=0.1))
+classifier.add(Dropout(0.3))
+
 classifier.add(Dense(units=36, activation='softmax'))
 
 # Compiling the ANN
@@ -78,7 +75,8 @@ classifier.fit_generator(
         validation_steps=test_set.n//test_set.batch_size,
         callbacks=callbacks)
 
-classifier.save('model.h5')
+from keras.models import load_model
+classifier = load_model('model_train.h5')
 
 import numpy as np
 from tqdm import tqdm
